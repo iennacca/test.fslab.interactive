@@ -51,15 +51,18 @@ let words =
 (**
 We can take the top 5 words occurring in this tutorial and see them in a chart:
 *)
+
 (*** define-output:grid ***)
 words
 |> Series.sort
 |> Series.rev
 |> Series.take 7
 (*** include-it:grid ***)
+
 (**
 Finally, we can take the same 6 words and call `Chart.Column` to see them in a chart:
 *)
+
 (*** define-output:chart ***)
 words
 |> Series.sort
@@ -75,4 +78,3 @@ An image is worth a thousand words:
 
 ![](http://imgs.xkcd.com/comics/hofstadter.png)
 *)
-

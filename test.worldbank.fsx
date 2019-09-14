@@ -41,7 +41,6 @@ let phgdp = series ph.``GDP (current US$)``
 |> Chart.WithLabels ["CZ"; "PH"]
 (*** include-it:chart2 ***)
 
-
 (*** define-output:APIKey ***)
 #load "dotenv.fs"
 #load "forecast.fs"
@@ -51,8 +50,9 @@ open TestFsLab
       
 let f = API.Forecast()
 printfn "APIKey: %s" API.Forecast.APIKey
-(*** define-output:APIKey ***)
+(*** include-output:APIKey ***)
 
+(*** define-output:chart ***)
 let cities = wb.Countries |> Seq.map (fun c -> c.CapitalCity, c.Name) |> Seq.filter (fun (c,n) -> not (String.IsNullOrEmpty c))
 
 let locationTemps = [
@@ -75,3 +75,4 @@ cleanLocationTemps
 |> Chart.Geo
 |> Chart.WithOptions(Options(colorAxis=axis))
 |> Chart.WithLabel "Temp"
+(*** include-it:chart ***)
