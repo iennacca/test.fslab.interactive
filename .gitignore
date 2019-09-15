@@ -410,3 +410,4 @@ Google.DataTable.Net.Wrapper.XML
 nuget
 paket-files
 .env
+.ionide/
