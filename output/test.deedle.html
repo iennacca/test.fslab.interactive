@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--
+      The Welcome to the Deedle test journal parameters will be replaced with the
+      document title extracted from the <h1> element or
+      file name, if there is no <h1> heading
+    -->
+    <title>Welcome to the Deedle test journal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles/style.css" />
+    <script src="styles/tips.js" type="text/javascript"></script>
+    
+    <script language="javascript" type="text/javascript">
+      function init()
+      {
+        try {
+          websocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
+          websocket.onmessage = function(evt) { location.reload(); };
+        } catch (e) { /* silently ignore lack of websockets */ }
+      }
+      window.addEventListener("load", init, false);
+    </script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fslab.org">fslab.org</a></li>
+          <li><a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a></li>
+          <li><a href="http://fslab.org/Deedle">Deedle</a></li>
+          <li><a href="http://fslab.org/RProvider">R Provider</a></li>
+          <li><a href="https://fslab.org/XPlot/">XPlot</a></li>
+          <li><a href="https://fslab.org/XPlot/">FSharp.Charting</a></li>
+          <li><a href="https://numerics.mathdotnet.com/">Math.NET Numerics</a></li>
+        </ul>
+        <h3 class="muted">Journal</h3>
+      </div>
+      <hr />
+      <div class="row" style="margin-top:30px">
+        <div class="span1"></div>
+        <div class="span10" id="main">
+          <h1>Welcome to the Deedle test journal</h1>
+<h2>Retrieving World Bank information via XML</h2>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="t">WorldData</span> <span class="o">=</span> <span class="i">XmlProvider</span><span class="o">&lt;</span><span class="s">&quot;http://api.worldbank.org/countries/indicators/NY.GDP.PCAP.CD?date=2010:2010&quot;</span><span class="o">&gt;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="i">indUrl</span> <span class="o">=</span> <span class="s">&quot;http://api.worldbank.org/countries/indicators/&quot;</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="f">getData</span> <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="i">year</span> <span onmouseout="hideTip(event, 'fs12', 14)" onmouseover="showTip(event, 'fs12', 14)" class="i">indicator</span> <span class="o">=</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 15)" onmouseover="showTip(event, 'fs13', 15)" class="i">query</span> <span class="o">=</span>
+        [(<span class="s">&quot;per_page&quot;</span>,<span class="s">&quot;1000&quot;</span>); (<span class="s">&quot;date&quot;</span>,<span onmouseout="hideTip(event, 'fs14', 16)" onmouseover="showTip(event, 'fs14', 16)" class="f">sprintf</span> <span class="s">&quot;</span><span class="pf">%d</span><span class="s">:</span><span class="pf">%d</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs11', 17)" onmouseover="showTip(event, 'fs11', 17)" class="i">year</span> <span onmouseout="hideTip(event, 'fs11', 18)" onmouseover="showTip(event, 'fs11', 18)" class="i">year</span>)]
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 19)" onmouseover="showTip(event, 'fs15', 19)" class="i">data</span> <span class="o">=</span> <span class="i">Http</span><span class="o">.</span><span class="i">RequestString</span>(<span onmouseout="hideTip(event, 'fs9', 20)" onmouseover="showTip(event, 'fs9', 20)" class="i">indUrl</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="i">indicator</span>, <span onmouseout="hideTip(event, 'fs13', 22)" onmouseover="showTip(event, 'fs13', 22)" class="i">query</span>)
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 23)" onmouseover="showTip(event, 'fs16', 23)" class="i">xml</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 24)" onmouseover="showTip(event, 'fs8', 24)" class="i">WorldData</span><span class="o">.</span><span class="i">Parse</span>(<span onmouseout="hideTip(event, 'fs15', 25)" onmouseover="showTip(event, 'fs15', 25)" class="i">data</span>)
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 26)" onmouseover="showTip(event, 'fs17', 26)" class="f">orNaN</span> <span onmouseout="hideTip(event, 'fs18', 27)" onmouseover="showTip(event, 'fs18', 27)" class="i">value</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs19', 28)" onmouseover="showTip(event, 'fs19', 28)" class="f">defaultArg</span> (<span onmouseout="hideTip(event, 'fs20', 29)" onmouseover="showTip(event, 'fs20', 29)" class="t">Option</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs21', 30)" onmouseover="showTip(event, 'fs21', 30)" class="f">map</span> <span onmouseout="hideTip(event, 'fs22', 31)" onmouseover="showTip(event, 'fs22', 31)" class="f">float</span> <span onmouseout="hideTip(event, 'fs18', 32)" onmouseover="showTip(event, 'fs18', 32)" class="i">value</span>) <span onmouseout="hideTip(event, 'fs23', 33)" onmouseover="showTip(event, 'fs23', 33)" class="i">nan</span>
+    <span onmouseout="hideTip(event, 'fs24', 34)" onmouseover="showTip(event, 'fs24', 34)" class="f">series</span> [ <span class="k">for</span> <span class="i">d</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs16', 35)" onmouseover="showTip(event, 'fs16', 35)" class="i">xml</span><span class="o">.</span><span class="i">Datas</span> <span class="k">-&gt;</span> <span class="i">d</span><span class="o">.</span><span class="i">Country</span><span class="o">.</span><span class="i">Value</span>, <span onmouseout="hideTip(event, 'fs17', 36)" onmouseover="showTip(event, 'fs17', 36)" class="i">orNaN</span> <span class="i">d</span><span class="o">.</span><span class="i">Value</span> ]
+  
+</code></pre></td>
+</tr>
+</table>
+<div class="tip" id="fs1">namespace System</div>
+<div class="tip" id="fs2">namespace Deedle</div>
+<div class="tip" id="fs3">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
+<div class="tip" id="fs4">Multiple items<br />namespace FSharp.Data<br /><br />--------------------<br />namespace Microsoft.FSharp.Data</div>
+<div class="tip" id="fs5">namespace XPlot</div>
+<div class="tip" id="fs6">namespace XPlot.GoogleCharts</div>
+<div class="tip" id="fs7">module Deedle<br /><br />from XPlot.GoogleCharts</div>
+<div class="tip" id="fs8">type WorldData = obj<br /><br />Full name: Test.deedle.WorldData</div>
+<div class="tip" id="fs9">val indUrl : string<br /><br />Full name: Test.deedle.indUrl</div>
+<div class="tip" id="fs10">val getData : year:int -&gt; indicator:&#39;a -&gt; Series&lt;&#39;b,&#39;c&gt; (requires equality)<br /><br />Full name: Test.deedle.getData</div>
+<div class="tip" id="fs11">val year : int</div>
+<div class="tip" id="fs12">val indicator : &#39;a</div>
+<div class="tip" id="fs13">val query : (string * string) list</div>
+<div class="tip" id="fs14">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.sprintf</div>
+<div class="tip" id="fs15">val data : obj</div>
+<div class="tip" id="fs16">val xml : obj</div>
+<div class="tip" id="fs17">val orNaN : (int option -&gt; float)</div>
+<div class="tip" id="fs18">Multiple items<br />val value : int option<br /><br />--------------------<br />type value = IConvertible<br /><br />Full name: XPlot.GoogleCharts.value</div>
+<div class="tip" id="fs19">val defaultArg : arg:&#39;T option -&gt; defaultValue:&#39;T -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.Operators.defaultArg</div>
+<div class="tip" id="fs20">Multiple items<br />module Option<br /><br />from YoLo<br /><br />--------------------<br />module Option<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs21">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; option:&#39;T option -&gt; &#39;U option<br /><br />Full name: Microsoft.FSharp.Core.Option.map</div>
+<div class="tip" id="fs22">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
+<div class="tip" id="fs23">val nan : float<br /><br />Full name: Microsoft.FSharp.Core.Operators.nan</div>
+<div class="tip" id="fs24">val series : observations:seq&lt;&#39;a * &#39;b&gt; -&gt; Series&lt;&#39;a,&#39;b&gt; (requires equality)<br /><br />Full name: Deedle.F# Series extensions.series</div>
+
+
+          
+        </div>
+        <div class="span1"></div>
+      </div>
+      <hr style="margin-top:50px;"/>
+      <footer class="footer" style="text-align:center">
+        Brought to you by the <a href="http://fslab.org">FsLab Contributors</a>.<br />
+        Submit <a href="https://github.com/fslaborg/FsLab">feedback on GitHub</a> and help us improve FsLab!
+      </footer>
+    </div>
+  </body>
+</html>

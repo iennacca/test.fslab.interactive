@@ -8,6 +8,7 @@
     <None Include="build.fsx" />
     <None Include="test.forecast.fsx" />
     <None Include="test.fslab.interactive.fsx" />
+    <None Include="test.deedle.fsx" />
     <Compile Include="dotenv.fs" />
     <Compile Include="writeText.fs" />
     <Compile Include="forecast.fs" />

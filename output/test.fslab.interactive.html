@@ -92,106 +92,6 @@
       position:absolute;
     }
   </style>
-
-  <script type="text/javascript">
-    function setupGrid(id, viewHeight, serviceUrl) {
-
-      // Create table with given column names & specified number of empty rows
-      function createRows(rowCount, columns) {
-        var head = $(id + " .head").empty();
-        $("<th />").html("#").appendTo(head);
-        for (var i = 0; i < columns.length; i++) {
-          $("<th />").html(columns[i]).appendTo(head);
-        }
-
-        var rows = [];
-        var body = $(id + " .body").empty();
-        for (var i = 0; i < rowCount; i++) {
-          var row = { columns: [] };
-          var tr = $("<tr />").appendTo(body);
-          var th = $("<th />").html("&nbsp;").appendTo(tr);
-          for (var j = 0; j < columns.length; j++) {
-            row.columns.push($("<td />").html("&nbsp;").appendTo(tr));
-          }
-          row.key = th;
-          row.tr = tr;
-          rows.push(row);
-        }
-        return rows;
-      }
-
-      // Once we receive meta-data about the grid from the servier, 
-      // we create the grid, set height of scrollbar and register 
-      // scroll event to update the data on change
-      function initialize(meta) {
-        var rowHeight = $(id + " tbody tr").height() - 1; // Magic constant
-        var thHeight = $(id + " thead tr").height() + 2; // Magic constant 
-        var totalRows = meta.rows;
-        var viewCount = Math.ceil((viewHeight - thHeight) / rowHeight - 1);
-        var tableHeight = rowHeight * Math.min(viewCount, totalRows);
-
-        // Resize and report new size to FSI container (if defined)
-        $(id + " .spacer").css("min-height", (rowHeight * totalRows) + "px");
-        $(id).height(tableHeight + thHeight);
-        $(id + " .scroller").css("margin-top", thHeight + "px");
-        $(id + " .scroller").height(tableHeight);
-        if (window.fsiResizeContent) window.fsiResizeContent();
-
-        // Create table rows of the view
-        var rows = createRows(viewCount, meta.columns);
-        
-        // Update that gets triggered once the current one is done
-        var nextUpdate = null;
-
-        // Update the displayed data on scroll
-        function update(offset) {
-          nextUpdate = offset;
-          for (var i = 0; i < viewCount; i++) {
-            rows[i].tr.show();
-            rows[i].key.addClass("faded");
-            for (var j = 0; j < rows[i].columns.length; j++)
-              rows[i].columns[j].addClass("faded");
-          }
-
-          $.ajax({ url: serviceUrl + "/rows/" + offset + "?count=" + viewCount }).done(function (res) {
-            var data = JSON.parse(res);
-            for (var i = 0; i < viewCount; i++) {
-              var point = data[i];
-              if (point == null) rows[i].tr.hide();
-              else {
-                rows[i].tr.show();
-                rows[i].key.removeClass("faded").html(point.key);
-                for (var j = 0; j < rows[i].columns.length; j++)
-                  rows[i].columns[j].removeClass("faded").html(point.columns[j]);
-              }
-            }
-            if (nextUpdate != null && nextUpdate != offset) {
-              console.log("Next: {0}", nextUpdate);
-              update(nextUpdate);
-            }
-            nextUpdate = null;
-          });
-        }
-
-        // Setup scroll handler & call to load first block of data
-        $(id + " .scroller").on("scroll", function () {
-          var offset = Math.ceil($(id + " .scroller").scrollTop() / rowHeight);
-          if (nextUpdate == null)
-            update(offset);
-          else
-            nextUpdate = offset;
-        });
-        update(0);
-      }
-
-      $.ajax({ url: serviceUrl + "/metadata" }).done(function (res) {
-        initialize(JSON.parse(res));
-      });
-    }
-  </script>
-<script type="text/javascript">
-        $(function () { setupGrid("#fslab-grid-17664-1", 500, "http://localhost:9259/0"); });
-      </script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
         google.charts.load('current', {
@@ -270,7 +170,7 @@ load the contents of <em>this</em> file:</p>
 </code></pre></td>
 </tr>
 </table>
-<table class="pre"><tr><td><pre><code>Loaded 'c:\Users\Jerry\Projects\test.fslab.interactive/test.fslab.interactive.fsx' of length 2140</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>Loaded 'd:\Jerry\Projects\test.fslab.interactive/test.fslab.interactive.fsx' of length 2140</code></pre></td></tr></table>
 <p>Now, we split the contents of the file into words, count the frequency of
 words longer than 3 letters and turn the result into a Deedle series:</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
@@ -302,20 +202,7 @@ words longer than 3 letters and turn the result into a Deedle series:</p>
 </code></pre></td>
 </tr>
 </table>
-<div class="fslab-html-output"><div class="grid live-grid" id="fslab-grid-17664-1">
-    <table>
-      <thead>
-        <tr class="head"><th>#</th><th>&nbsp;</th></tr>
-      </thead>
-      <tbody class="body">
-        <tr><th>&nbsp;</th><td>&nbsp;</td></tr>
-      </tbody>
-    </table>
-    <div class="scroller">
-      <div class="spacer"></div>
-    </div>
-  </div>
-  </div>
+<div class="fslab-html-output"><div class="grid" id="fslab-grid-4120-1"><table><thead><tr class="head"><th>#</th><th>Value</th></tr></thead><tbody><tr><th>words</th><td>6</td></tr><tr><th>this</th><td>5</td></tr><tr><th>file</th><td>3</td></tr><tr><th>open</th><td>3</td></tr><tr><th>into</th><td>3</td></tr><tr><th>journal</th><td>3</td></tr><tr><th>contents</th><td>3</td></tr></tbody></table></div></div>
 <p>Finally, we can take the same 6 words and call <code>Chart.Column</code> to see them in a chart:</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
@@ -343,11 +230,11 @@ words longer than 3 letters and turn the result into a Deedle series:</p>
 
                 var options = {"backgroundColor":{"fill":"transparent"},"chartArea":{"backgroundColor":{"fill":"#f4f4f4"}},"colors":["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],"hAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"legend":{"position":"none","textStyle":{"color":"#000000"}},"titleTextStyle":{"color":"#000000"},"vAxis":{"baselineColor":"#fdfdfd","gridlines":{"color":"#fdfdfd"},"textStyle":{"color":"#000000"}},"datalessRegionColor":"#fdfdfd"} 
 
-                var chart = new google.visualization.ColumnChart(document.getElementById('118ffc15-cead-406d-a18f-d3cc06d7a384'));
+                var chart = new google.visualization.ColumnChart(document.getElementById('46d7dcaf-1155-4448-9bdc-03e054b2bad5'));
                 chart.draw(data, options);
             }
 </script>
-<div id="118ffc15-cead-406d-a18f-d3cc06d7a384" style="width: 800px; height: 450px;"></div></div>
+<div id="46d7dcaf-1155-4448-9bdc-03e054b2bad5" style="width: 800px; height: 450px;"></div></div>
 <h2>Summary</h2>
 <p>An image is worth a thousand words:</p>
 <p><img src="http://imgs.xkcd.com/comics/hofstadter.png" alt="" /></p>
