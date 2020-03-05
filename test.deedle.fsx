@@ -1,4 +1,12 @@
-(*** hide ***)
+(**
+Welcome to the Deedle test journal
+=======================================
+
+
+Retrieving World Bank information via XML
+-----------------------------------------
+*)
+
 #r "System.Xml.Linq.dll"
 #load "packages/FsLab/Themes/AtomChester.fsx"
 #load "packages/FsLab/FsLab.fsx"
@@ -9,14 +17,6 @@ open FSharp.Data
 open XPlot.GoogleCharts
 open XPlot.GoogleCharts.Deedle
 
-(**
-Welcome to the Deedle test journal
-=======================================
-
-
-Retrieving World Bank information via XML
------------------------------------------
-*)
 
 type WorldData = XmlProvider<"http://api.worldbank.org/countries/indicators/NY.GDP.PCAP.CD?date=2010:2010">
 let indUrl = "http://api.worldbank.org/countries/indicators/"
@@ -29,7 +29,7 @@ let getData year indicator =
     let orNaN value =
         defaultArg (Option.map float value) nan
     series [ for d in xml.Datas -> d.Country.Value, orNaN d.Value ]
- 
+
 let wb = WorldBankData.GetDataContext()
 let inds = wb.Countries.World.Indicators
 let code = inds.``CO2 emissions (kt)``.IndicatorCode
@@ -47,3 +47,14 @@ change
 |> Chart.Geo
 |> Chart.WithOptions(Options(colorAxis=axis))
 |> Chart.WithLabel "CO2 emissions rise since 2010"
+
+let codes = [ 
+    "CO2", inds.``CO2 emissions (metric tons per capita)``
+    "Univ", inds.``School enrollment, tertiary (% gross)``
+    "Life", inds.``Life expectancy at birth, total (years)``
+    "Growth", inds.``GDP per capita growth (annual %)``
+    "Pop", inds.``Population growth (annual %)``
+    "GDP", inds.``GDP per capita (current US$)`` ]
+
+let world =
+    frame [ for name, ind in codes -> name, getData 2010 ind.IndicatorCode ]
